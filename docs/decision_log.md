@@ -2,6 +2,7 @@
 
 ## 2026-10-01
 
+- Chose “volatility management” as the project-level umbrella term and retained “volatility timing” for the return-scaling mechanism. The public repository is named `volatility-managed-factor-portfolios`, which covers the current factor and factor-momentum analyses without implying that the postponed liquidity stage has already been implemented.
 - Prepared a public-GitHub package without changing research results. Added an MIT code license, `CITATION.cff`, source-data attribution, a reproducible `data/README.md`, and explicit attribution for the selected Moreira–Muir Tables I–III benchmark estimates in notebook 02.
 - Kept `references/`, `data/raw/`, `data/processed/`, and `output/logs/` local through `.gitignore`. This prevents redistribution of the protected project document, paper PDFs, third-party factor data, processed panels retaining those returns, and logs containing machine-specific paths. Executed notebooks and generated result tables remain publishable so results can be inspected without the excluded files.
 - Cleaned the repository without changing a strategy definition, sample, timing rule, normalization, or regression point estimate. Renamed the executable stages to `src/01_build_managed_factors.py` and `src/02_build_factor_momentum_strategies.py`; reusable modules remain unnumbered because they are imported rather than run as pipeline stages.

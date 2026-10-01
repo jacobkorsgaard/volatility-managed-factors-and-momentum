@@ -1,4 +1,4 @@
-# Volatility timing and factor momentum
+# Volatility-managed factor portfolios
 
 This repository studies volatility-managed factor portfolios, beginning with a replication of Moreira and Muir (2017) and extending the analysis to alternative volatility forecasts and factor momentum.
 
