@@ -1,0 +1,15 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Third-party and private reference material stays local.
+references/
+
+# Source and reproducible processed data stay local. See data/README.md.
+data/raw/*
+data/processed/*
+
+# Execution logs contain machine-specific paths and stay local.
+output/logs/

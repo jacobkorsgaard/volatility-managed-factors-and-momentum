@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the software and the underlying papers and data sources."
+title: "Volatility timing and factor momentum"
+type: software
+authors:
+  - family-names: "Korsgaard"
+    given-names: "Jacob"
+version: 0.1.0
+date-released: 2026-10-01
+license: MIT
