@@ -2,9 +2,7 @@
 
 This repository studies volatility-managed factor portfolios, beginning with a replication of Moreira and Muir (2017) and extending the analysis to alternative volatility forecasts and factor momentum.
 
-> **Working README:** update this file after the empirical design and final analysis are complete. In particular, replace the exploratory conclusions and unresolved-decision list before treating the repository as final.
-
-## Current scope
+## Scope
 
 The active analysis:
 
@@ -14,17 +12,25 @@ The active analysis:
 4. compares alternative factor-momentum constructions; and
 5. studies why lagged-realized-variance timing is particularly strong for momentum.
 
-Liquidity portfolios are not part of the active analysis. If that stage is resumed, the previously specified 30/40/30 liquidity split remains fixed.
+The completed scope covers factor portfolios and factor momentum. Liquidity portfolios are outside this scope.
+
+## Main findings
+
+- Momentum is the clearest case for volatility management in the volatility-forecast comparison: its own-factor spanning alpha is significant under lagged realized variance, AR(1), and GARCH timing and across the reported subperiods. The benefit is not universal across factors, and momentum's alpha magnitude declines in the later sample.
+- For lagged-RV-managed momentum, the average equal-volatility timing payoff is 0.663% per month, with a Newey–West(12) t-statistic of 4.026 conditional on the ex-post scale. The lowest lagged-volatility quintile contributes 0.603 percentage points of that average gain. Scaling up calm momentum months drives most of the mean improvement; reducing exposure after volatile months contributes more clearly to lower downside risk.
+- The timing payoff is historically uneven and much flatter after the late 1990s. The strategy's near-zero unconditional market beta also masks changing exposure across expansion and recession states.
+
+These findings describe historical gross returns under the construction and comparison conventions below. The notebooks provide the full replication, factor-momentum comparisons, and supporting diagnostics; [`docs/methodology.md`](docs/methodology.md) records the definitions and implementation choices.
 
 ## Repository structure
 
 - `data/raw/`: immutable French factor files and the NBER recession indicator.
 - `data/processed/`: reproducible analysis-ready factor and strategy panels.
 - `src/`: two numbered build stages plus reusable research modules.
-- `notebooks/`: the ordered exploratory and replication analysis.
+- `notebooks/`: the ordered replication and comparative analysis.
 - `output/tables/`: generated tables retained outside the notebooks.
 - `output/logs/`: build diagnostics.
-- `docs/methodology.md`: definitions, timing conventions, and unresolved choices.
+- `docs/methodology.md`: definitions, timing conventions, and possible research extensions.
 - `docs/decision_log.md`: chronological research decisions and material findings.
 - `references/`: read-only papers and project source material.
 
@@ -86,7 +92,7 @@ The notebooks contain embedded outputs so results can be inspected on GitHub wit
 
 - Monthly regressions use Newey–West HAC inference with 12 lags as the primary project convention. Paper-specific inference is reported separately where relevant.
 - Several comparisons use positive ex-post equal-volatility constants. These do not affect Sharpe ratios or alpha t-statistics, but they are not implementable real-time volatility targets.
-- Weights are currently uncapped and results exclude transaction costs.
+- Weights are uncapped and results exclude transaction costs.
 - Subperiod results are descriptive rather than out-of-sample tests.
 - GARCH persistence is not constrained below one.
 - The available momentum data contain the net factor, not separate winner and loser legs.
@@ -98,10 +104,3 @@ Run:
 ```bash
 python -m pytest -q
 ```
-
-## Finalization reminder
-
-- [ ] Update this README after the full code and analysis are finalized.
-- [ ] Replace exploratory conclusions with final evidence.
-- [ ] Resolve and document the remaining inference, leverage, transaction-cost, and out-of-sample decisions.
-- [ ] Confirm that all generated data and notebook outputs match a clean rebuild.
