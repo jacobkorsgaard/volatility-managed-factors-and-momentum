@@ -2,15 +2,13 @@
 
 Factor risk varies over time, but higher volatility need not be accompanied by proportionally higher expected returns. Reducing exposure after volatile months and increasing it after calm months may therefore improve risk-adjusted performance. This repository examines that proposition for US equity factors, with particular attention to momentum.
 
-The analysis begins with a replication of Moreira and Muir (2017), then asks whether the results depend on the volatility estimate and whether volatility management adds to factor momentum. It distinguishes conventional equity momentum—the published winner-minus-loser factor—from time-series momentum across factors. A final diagnostic examines which volatility states account for the gains from managing conventional momentum and how those gains vary across market conditions and historical periods.
+The analysis begins with a replication of Moreira and Muir (2017), then asks whether the results depend on the volatility estimate and whether volatility management adds to factor momentum, which distinguishes conventional cross-sectional momentum. A final diagnostic examines which volatility states account for the gains from managing conventional momentum and how those gains vary across market conditions and historical periods.
 
 ## Empirical approach
 
 The project uses the market, size, value, profitability, investment, and momentum factors from the Kenneth R. French Data Library. The baseline strategy scales each monthly factor return inversely with the preceding month's realized variance, calculated from demeaned daily returns. Alternatives use expanding AR(1) forecasts of log realized variance and GARCH(1,1) forecasts estimated from daily returns, each initialized with 120 months of data and refitted monthly.
 
-Factor momentum takes equally weighted long or short positions according to the sign of each available factor's average return over the preceding 12 months, without a skip month. Volatility timing is applied before factor-momentum construction, after portfolio aggregation, or at both stages. Comparisons use Sharpe ratios, downside-risk measures, and spanning regressions to assess whether a strategy adds returns beyond its benchmark. Monthly regression inference uses Newey–West standard errors with 12 lags. Paper-specific inference is distinguished in the replication.
-
-The replication ends in April 2015. Extensions use the available data through July 2026, with common samples defined within each comparison. The project covers factor portfolios and factor momentum. Liquidity portfolios are outside its scope.
+Factor momentum takes equally weighted long or short positions according to the sign of each available factor's average return over the preceding 12 months, without a skip month. Volatility timing is applied before factor-momentum construction, after portfolio aggregation, or at both stages. Comparisons use Sharpe ratios, downside-risk measures, and spanning regressions to assess whether a strategy adds returns beyond its benchmark.
 
 ## Main findings
 
