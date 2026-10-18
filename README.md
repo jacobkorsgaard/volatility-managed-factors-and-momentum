@@ -1,56 +1,44 @@
-# Volatility-managed factor portfolios
+# Volatility-Managed Factors and Momentum
 
-This repository studies volatility-managed factor portfolios, beginning with a replication of Moreira and Muir (2017) and extending the analysis to alternative volatility forecasts and factor momentum.
+Factor risk varies over time, but higher volatility need not be accompanied by proportionally higher expected returns. Reducing exposure after volatile months and increasing it after calm months may therefore improve risk-adjusted performance. This repository examines that proposition for US equity factors, with particular attention to momentum.
 
-## Scope
+The analysis begins with a replication of Moreira and Muir (2017), then asks whether the results depend on the volatility estimate and whether volatility management adds to factor momentum. It distinguishes conventional equity momentum—the published winner-minus-loser factor—from time-series momentum across factors. A final diagnostic examines which volatility states account for the gains from managing conventional momentum and how those gains vary across market conditions and historical periods.
 
-The active analysis:
+## Empirical approach
 
-1. validates the available daily and monthly factor data;
-2. replicates the available parts of Figures 1–3 and Tables I–III in Moreira and Muir (2017);
-3. compares lagged realized variance, expanding AR(1), and monthly GARCH(1,1) timing;
-4. compares alternative factor-momentum constructions; and
-5. studies why lagged-realized-variance timing is particularly strong for momentum.
+The project uses the market, size, value, profitability, investment, and momentum factors from the Kenneth R. French Data Library. The baseline strategy scales each monthly factor return inversely with the preceding month's realized variance, calculated from demeaned daily returns. Alternatives use expanding AR(1) forecasts of log realized variance and GARCH(1,1) forecasts estimated from daily returns, each initialized with 120 months of data and refitted monthly.
 
-The completed scope covers factor portfolios and factor momentum. Liquidity portfolios are outside this scope.
+Factor momentum takes equally weighted long or short positions according to the sign of each available factor's average return over the preceding 12 months, without a skip month. Volatility timing is applied before factor-momentum construction, after portfolio aggregation, or at both stages. Comparisons use Sharpe ratios, downside-risk measures, and spanning regressions to assess whether a strategy adds returns beyond its benchmark. Monthly regression inference uses Newey–West standard errors with 12 lags. Paper-specific inference is distinguished in the replication.
+
+The replication ends in April 2015. Extensions use the available data through July 2026, with common samples defined within each comparison. The project covers factor portfolios and factor momentum. Liquidity portfolios are outside its scope.
 
 ## Main findings
 
-- Momentum is the clearest case for volatility management in the volatility-forecast comparison: its own-factor spanning alpha is significant under lagged realized variance, AR(1), and GARCH timing and across the reported subperiods. The benefit is not universal across factors, and momentum's alpha magnitude declines in the later sample.
-- For lagged-RV-managed momentum, the average equal-volatility timing payoff is 0.663% per month, with a Newey–West(12) t-statistic of 4.026 conditional on the ex-post scale. The lowest lagged-volatility quintile contributes 0.603 percentage points of that average gain. Scaling up calm momentum months drives most of the mean improvement; reducing exposure after volatile months contributes more clearly to lower downside risk.
-- The timing payoff is historically uneven and much flatter after the late 1990s. The strategy's near-zero unconditional market beta also masks changing exposure across expansion and recession states.
+- **Momentum provides the clearest evidence for volatility management.** Its alpha relative to the original momentum factor is significant under all three volatility estimates and across the reported subperiods, although its magnitude declines in the later sample. The evidence is weaker and less persistent for other factors.
+- **Lagged-variance timing improves momentum's historical risk-adjusted performance and downside outcomes.** Over August 1927–July 2026, its annualized Sharpe ratio rises from 0.45 to 0.94, while maximum drawdown falls from approximately 78% to 32% on the stored return scales.
+- **Volatility timing also improves factor momentum, and timing order matters.** In the selected-strategy comparison, annualized Sharpe ratios are 0.49 for original factor momentum, 0.70 when lagged-variance timing is applied to the aggregate portfolio, and 0.77 when factor momentum is constructed from individually timed factors. The two managed constructions do not span one another. In the broader comparison, adding a second timing layer produces no incremental alpha significant at 5% relative to its corresponding single-layer parent.
+- **Momentum's average timing gain comes mainly from increasing exposure in calm periods.** After equalizing full-sample volatility, the lowest lagged-volatility quintile contributes 0.603 percentage points to the average monthly payoff of 0.663%. Reducing exposure after volatile months contributes more clearly to downside protection. The payoff is historically uneven and much flatter after the late 1990s.
 
-These findings describe historical gross returns under the construction and comparison conventions below. The notebooks provide the full replication, factor-momentum comparisons, and supporting diagnostics; [`docs/methodology.md`](docs/methodology.md) records the definitions and implementation choices.
+These are historical gross-return findings under the normalization and sample conventions below. The notebooks report the supporting estimates and diagnostics.
 
-## Repository structure
+## Notebooks
 
-- `data/raw/`: immutable French factor files and the NBER recession indicator.
-- `data/processed/`: reproducible analysis-ready factor and strategy panels.
-- `src/`: two numbered build stages plus reusable research modules.
-- `notebooks/`: the ordered replication and comparative analysis.
-- `output/tables/`: generated tables retained outside the notebooks.
-- `output/logs/`: build diagnostics.
-- `docs/methodology.md`: definitions, timing conventions, and possible research extensions.
-- `docs/decision_log.md`: chronological research decisions and material findings.
-- `references/`: read-only papers and project source material.
+Read the six notebooks in order. Embedded outputs allow the results to be inspected on GitHub without rerunning the analysis.
 
-Third-party raw data, derived data panels, execution logs, and the local `references/` collection are excluded from the public repository. See [`data/README.md`](data/README.md) for the required source files and reconstruction steps.
+| Notebook | Coverage |
+|---|---|
+| [01 — Summary Statistics](notebooks/01_summary_statistics.ipynb) | Documents data sources, dimensions, factor and strategy coverage, and structural validation. |
+| [02 — Moreira–Muir Replication](notebooks/02_moreira_muir_replication.ipynb) | Replicates the available parts of Figures 1–3 and Tables I–III, comparing selected estimates with published benchmarks. |
+| [03 — Volatility Forecast Comparison](notebooks/03_volatility_horse_race.ipynb) | Compares lagged realized variance, AR(1), and GARCH timing using performance, spanning tests, and subperiod evidence. |
+| [04 — Factor Momentum Comparison](notebooks/04_factor_momentum_horse_race.ipynb) | Evaluates timing before and after aggregation, matched equal-weight benchmarks, and the incremental contribution of a second timing layer. |
+| [05 — Selected Strategy Comparison](notebooks/05_selected_strategy_comparison.ipynb) | Compares conventional and factor momentum with selected lagged-variance strategies through performance, downside risk, spanning, and subperiod analysis. |
+| [06 — Momentum Volatility Timing](notebooks/06_momentum_volatility_timing.ipynb) | Examines exposure, return distributions, volatility-state payoff contributions, and recession-dependent comovement. |
 
-## Data and benchmark attribution
+## Data and reproducibility
 
-Factor returns come from the [Kenneth R. French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html). Recession dates come from the [NBER US Business Cycle Expansions and Contractions](https://www.nber.org/research/data/us-business-cycle-expansions-and-contractions) chronology.
+Download the daily and monthly US factor files from the [Kenneth R. French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) and prepare the monthly recession indicator from the [NBER chronology](https://www.nber.org/research/data/us-business-cycle-expansions-and-contractions). The required filenames, recession convention, and input schema are documented in [data/README.md](data/README.md). Place these inputs in `data/raw/` without modifying the French source files. Raw data, processed panels, execution logs, and the local reference collection are excluded from the public repository. Recession labels are retrospective context, not trading inputs.
 
-The replication benchmarks are selected point estimates transcribed from:
-
-> Moreira, A., and T. Muir (2017), “Volatility-Managed Portfolios,” *The Journal of Finance* 72(4), 1611–1644. [https://doi.org/10.1111/jofi.12513](https://doi.org/10.1111/jofi.12513)
-
-The repository reproduces only the selected numerical benchmarks needed to evaluate the replication; it does not redistribute the paper or reproduce its table layouts.
-
-The MIT license covers the repository's original software and documentation only. It does not grant rights to third-party data, publications, or reference material.
-
-## Environment
-
-Create the Conda environment and register its Jupyter kernel:
+From the repository root, create the environment and register its Jupyter kernel:
 
 ```bash
 conda env create -f environment.yml
@@ -58,49 +46,26 @@ conda activate anaconda-finance
 python -m ipykernel install --user --name anaconda-finance --display-name "Python (anaconda-finance)"
 ```
 
-If `anaconda-finance` already exists, update it instead:
-
-```bash
-conda env update -f environment.yml
-```
-
-All notebooks are configured to use the `anaconda-finance` kernel.
-
-## Rebuild the processed data
-
-Run the two stages from the repository root:
+For an existing environment, use `conda env update -f environment.yml` instead of the create command. Build the processed panels before executing the notebooks:
 
 ```bash
 python src/01_build_managed_factors.py
 python src/02_build_factor_momentum_strategies.py
+jupyter lab
 ```
 
-Stage 1 reads the immutable raw factor files and constructs the original, lagged-RV-, AR(1)-, and GARCH-managed factor panel. Stage 2 constructs factor-momentum portfolios and their portfolio-level volatility-managed variants.
+The first stage writes the original and volatility-managed factor panel. The second constructs factor-momentum portfolios and their portfolio-level timing variants. Both panels are written to `data/processed/`. Select the **Python (anaconda-finance)** kernel and run the notebooks in numerical order, executing cells from top to bottom. Expanding GARCH estimation can make the build computationally demanding. Run the automated checks with `python -m pytest -q`.
 
-## Notebook order
+Reusable research code lives in `src/`, retained generated tables in `output/tables/`, and build diagnostics in `output/logs/`. [docs/methodology.md](docs/methodology.md) records definitions and implementation choices. [docs/decision_log.md](docs/decision_log.md) records research decisions.
 
-1. `01_summary_statistics.ipynb` — sources, dimensions, coverage, and structural validation.
-2. `02_moreira_muir_replication.ipynb` — the available Moreira–Muir replication.
-3. `03_volatility_horse_race.ipynb` — comparison of volatility definitions.
-4. `04_factor_momentum_horse_race.ipynb` — factor-momentum architecture selection.
-5. `05_selected_strategy_comparison.ipynb` — performance, risk, spanning, and subperiods.
-6. `06_momentum_volatility_timing.ipynb` — momentum-specific timing diagnostics.
+## Interpretation and limitations
 
-The notebooks contain embedded outputs so results can be inspected on GitHub without rerunning them. To reproduce the results, rebuild the processed panels first and then run the notebooks in numerical order.
+- **Normalization affects implementation claims.** The baseline scale is estimated through April 2015, and several comparisons equalize volatility ex post. Positive constant scaling leaves Sharpe ratios and alpha t-statistics unchanged, but return magnitudes and exposures are not real-time volatility targets. The volatility-forecast comparison retains different native scales, so magnitude differences also reflect normalization. The timing-payoff t-statistic is conditional on its estimated comparison scale.
+- **Results exclude trading frictions and constraints.** Weights are uncapped, transaction costs are absent, and published factor returns do not account for real-time data availability. Subperiod comparisons and in-sample mean–variance portfolios are descriptive rather than out-of-sample investment tests. The many pairwise spanning tests are exploratory.
+- **Forecasting and mechanism evidence remain qualified.** GARCH persistence is unrestricted and its forecast horizon uses the historical target month's trading-day count. Momentum data contain only the net factor, so separate winner- and loser-leg contributions and proposed holdings-level explanations are not tested.
 
-## Important interpretation limits
+## Reference and license
 
-- Monthly regressions use Newey–West HAC inference with 12 lags as the primary project convention. Paper-specific inference is reported separately where relevant.
-- Several comparisons use positive ex-post equal-volatility constants. These do not affect Sharpe ratios or alpha t-statistics, but they are not implementable real-time volatility targets.
-- Weights are uncapped and results exclude transaction costs.
-- Subperiod results are descriptive rather than out-of-sample tests.
-- GARCH persistence is not constrained below one.
-- The available momentum data contain the net factor, not separate winner and loser legs.
+Moreira, A., and T. Muir (2017). “Volatility-Managed Portfolios.” *The Journal of Finance*, 72(4), 1611–1644. [doi:10.1111/jofi.12513](https://doi.org/10.1111/jofi.12513).
 
-## Tests
-
-Run:
-
-```bash
-python -m pytest -q
-```
+Selected published point estimates are included to evaluate the replication. The paper and its table layouts are not redistributed. The [MIT License](LICENSE) covers original software and documentation. Third-party data, publications, and reference material remain subject to their providers' terms.
