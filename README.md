@@ -51,8 +51,8 @@ The two build stages write factor and factor-momentum panels to `data/processed/
 
 Reusable code is in `src/`, retained tables in `output/tables/`, and build diagnostics in `output/logs/`. Research decisions are documented in [docs/decision_log.md](docs/decision_log.md).
 
-## Reference and license
+## Reference
 
 Moreira, A., and T. Muir (2017). “Volatility-Managed Portfolios.” *The Journal of Finance*, 72(4), 1611–1644. [doi:10.1111/jofi.12513](https://doi.org/10.1111/jofi.12513).
 
-The [MIT License](LICENSE) covers original code and documentation. Third-party data and publications remain subject to their providers' terms.
+Third-party data and publications remain subject to their providers' terms.
