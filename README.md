@@ -8,9 +8,9 @@ The analysis begins with a replication of Moreira and Muir (2017), then asks whe
 
 The project uses the market, size, value, profitability, investment, and momentum factors from the Kenneth R. French Data Library. The baseline strategy scales each monthly factor return inversely with the preceding month's realized variance, calculated from demeaned daily returns. Alternatives use expanding AR(1) forecasts of log realized variance and GARCH(1,1) forecasts estimated from daily returns, each initialized with 120 months of data and refitted monthly.
 
-Factor momentum takes equally weighted long or short positions according to the sign of each available factor's average return over the preceding 12 months, without a skip month. Volatility timing is applied before factor-momentum construction, after portfolio aggregation, or at both stages. Comparisons use Sharpe ratios, downside-risk measures, and spanning regressions to assess whether a strategy adds returns beyond its benchmark. Monthly regression inference uses Newey–West standard errors with 12 lags; paper-specific inference is distinguished in the replication.
+Factor momentum takes equally weighted long or short positions according to the sign of each available factor's average return over the preceding 12 months, without a skip month. Volatility timing is applied before factor-momentum construction, after portfolio aggregation, or at both stages. Comparisons use Sharpe ratios, downside-risk measures, and spanning regressions to assess whether a strategy adds returns beyond its benchmark. Monthly regression inference uses Newey–West standard errors with 12 lags. Paper-specific inference is distinguished in the replication.
 
-The replication ends in April 2015. Extensions use the available data through July 2026, with common samples defined within each comparison. The project covers factor portfolios and factor momentum; liquidity portfolios are outside its scope.
+The replication ends in April 2015. Extensions use the available data through July 2026, with common samples defined within each comparison. The project covers factor portfolios and factor momentum. Liquidity portfolios are outside its scope.
 
 ## Main findings
 
@@ -54,18 +54,18 @@ python src/02_build_factor_momentum_strategies.py
 jupyter lab
 ```
 
-The first stage writes the original and volatility-managed factor panel; the second constructs factor-momentum portfolios and their portfolio-level timing variants. Both panels are written to `data/processed/`. Select the **Python (anaconda-finance)** kernel and run the notebooks in numerical order, executing cells from top to bottom. Expanding GARCH estimation can make the build computationally demanding. Run the automated checks with `python -m pytest -q`.
+The first stage writes the original and volatility-managed factor panel. The second constructs factor-momentum portfolios and their portfolio-level timing variants. Both panels are written to `data/processed/`. Select the **Python (anaconda-finance)** kernel and run the notebooks in numerical order, executing cells from top to bottom. Expanding GARCH estimation can make the build computationally demanding. Run the automated checks with `python -m pytest -q`.
 
-Reusable research code lives in `src/`, retained generated tables in `output/tables/`, and build diagnostics in `output/logs/`. [docs/methodology.md](docs/methodology.md) records definitions and implementation choices; [docs/decision_log.md](docs/decision_log.md) records research decisions.
+Reusable research code lives in `src/`, retained generated tables in `output/tables/`, and build diagnostics in `output/logs/`. [docs/methodology.md](docs/methodology.md) records definitions and implementation choices. [docs/decision_log.md](docs/decision_log.md) records research decisions.
 
 ## Interpretation and limitations
 
 - **Normalization affects implementation claims.** The baseline scale is estimated through April 2015, and several comparisons equalize volatility ex post. Positive constant scaling leaves Sharpe ratios and alpha t-statistics unchanged, but return magnitudes and exposures are not real-time volatility targets. The volatility-forecast comparison retains different native scales, so magnitude differences also reflect normalization. The timing-payoff t-statistic is conditional on its estimated comparison scale.
-- **Results exclude trading frictions and constraints.** Weights are uncapped, transaction costs are absent, and published factor returns do not account for real-time data availability. Subperiod comparisons and in-sample mean–variance portfolios are descriptive rather than out-of-sample investment tests; the many pairwise spanning tests are exploratory.
+- **Results exclude trading frictions and constraints.** Weights are uncapped, transaction costs are absent, and published factor returns do not account for real-time data availability. Subperiod comparisons and in-sample mean–variance portfolios are descriptive rather than out-of-sample investment tests. The many pairwise spanning tests are exploratory.
 - **Forecasting and mechanism evidence remain qualified.** GARCH persistence is unrestricted and its forecast horizon uses the historical target month's trading-day count. Momentum data contain only the net factor, so separate winner- and loser-leg contributions and proposed holdings-level explanations are not tested.
 
 ## Reference and license
 
 Moreira, A., and T. Muir (2017). “Volatility-Managed Portfolios.” *The Journal of Finance*, 72(4), 1611–1644. [doi:10.1111/jofi.12513](https://doi.org/10.1111/jofi.12513).
 
-Selected published point estimates are included to evaluate the replication; the paper and its table layouts are not redistributed. The [MIT License](LICENSE) covers original software and documentation. Third-party data, publications, and reference material remain subject to their providers' terms.
+Selected published point estimates are included to evaluate the replication. The paper and its table layouts are not redistributed. The [MIT License](LICENSE) covers original software and documentation. Third-party data, publications, and reference material remain subject to their providers' terms.
